@@ -6,7 +6,7 @@ services:
     container_name: tailscale-node
     restart: unless-stopped
     environment:
-      - TS_AUTHKEY=tskey-auth-kRsdJAnQEQ11CNTRL-coU3nr9iAN2bgvfzb7MnN2HTYxn36aFE
+      - TS_AUTHKEY=${TS_AUTHKEY}
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_HOSTNAME=dashboard-host
     volumes:
@@ -31,13 +31,13 @@ services:
       - NODE_ENV=production
       - PORT=3000
       - DATABASE_PATH=/app/data/tailscale-dashboard.db
-      - NODE_SYNC_INTERVAL_SEC=300
-      - PING_POLLING_INTERVAL_SEC=30
-      - PING_TIMEOUT_MS=5000
-      - DATA_RETENTION_DAYS=30
+      - NODE_SYNC_INTERVAL_SEC=${NODE_SYNC_INTERVAL_SEC:-10}
+      - PING_POLLING_INTERVAL_SEC=${PING_POLLING_INTERVAL_SEC:-30}
+      - PING_TIMEOUT_MS=${PING_TIMEOUT_MS:-5000}
+      - DATA_RETENTION_DAYS=${DATA_RETENTION_DAYS:-30}
       - TS_STATE_DIR=/var/lib/tailscale
-      - TAILSCALE_API_KEY=tskey-api-kvMbVZ3mnK11CNTRL-rJC8ozJeVC7fSF9CNm96D7LjXhzM9GTE
-      - TAILSCALE_TAILNET=seagull-company.ts.net
+      - TAILSCALE_API_KEY=${TAILSCALE_API_KEY}
+      - TAILSCALE_TAILNET=${TAILSCALE_TAILNET}
     env_file:
       - .env
     volumes:

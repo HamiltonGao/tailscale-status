@@ -1,0 +1,179 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-background-base: 9 9 11;
+    --color-background-surface: 18 18 20;
+    --color-background-elevated: 26 26 30;
+    --color-background-input: 30 30 34;
+    --color-background-hover: 37 37 41;
+  }
+
+  * {
+    @apply border-border-default;
+  }
+
+  body {
+    @apply bg-background-base text-text-primary antialiased;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html {
+    font-size: 14px;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-background-surface;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border-default rounded-md;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-border-strong;
+  }
+}
+
+@layer components {
+  /* Glass morphism effect - use sparingly */
+  .glass {
+    @apply bg-background-surface/80 backdrop-blur-md border-border-default;
+  }
+
+  /* Card base style */
+  .card {
+    @apply bg-background-surface rounded-lg shadow-card border-border-subtle;
+  }
+
+  /* Button base styles */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-all duration-200;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500/50;
+  }
+
+  .btn-primary {
+    @apply bg-teal-500 text-white hover:bg-teal-400 active:scale-[0.98];
+  }
+
+  .btn-secondary {
+    @apply bg-background-input text-text-primary hover:bg-background-hover active:scale-[0.98];
+  }
+
+  .btn-ghost {
+    @apply text-text-secondary hover:text-text-primary hover:bg-background-hover active:scale-[0.98];
+  }
+
+  /* Status badge */
+  .badge {
+    @apply inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-tiny font-medium;
+  }
+
+  .badge-success {
+    @apply bg-status-online/10 text-status-online;
+  }
+
+  .badge-error {
+    @apply bg-status-offline/10 text-status-offline;
+  }
+
+  .badge-warning {
+    @apply bg-status-derp/10 text-status-derp;
+  }
+
+  .badge-neutral {
+    @apply bg-status-unknown/10 text-status-unknown;
+  }
+
+  /* Path type badges */
+  .path-direct {
+    @apply bg-status-direct/10 text-status-direct;
+  }
+
+  .path-derp {
+    @apply bg-status-derp/10 text-status-derp;
+  }
+
+  .path-relay {
+    @apply bg-status-peerRelay/10 text-status-peerRelay;
+  }
+
+  /* Glow dots for status */
+  .status-dot {
+    @apply w-2 h-2 rounded-full;
+    animation: pulse-slow 3s ease-in-out infinite;
+  }
+
+  .status-dot.online {
+    @apply bg-status-online shadow-glow-success;
+  }
+
+  .status-dot.offline {
+    @apply bg-status-offline;
+  }
+
+  .status-dot.unknown {
+    @apply bg-status-unknown;
+  }
+
+  @keyframes pulse-slow {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  /* Input base */
+  .input {
+    @apply w-full rounded-md bg-background-input border-border-default px-3 py-2 text-text-primary placeholder-text-disabled;
+    @apply focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500/30;
+    @apply transition-all duration-200;
+  }
+
+  /* Table styles */
+  .table-container {
+    @apply overflow-x-auto rounded-lg border border-border-subtle;
+  }
+
+  .data-table {
+    @apply w-full text-left;
+  }
+
+  .data-table thead {
+    @apply bg-background-elevated;
+  }
+
+  .data-table th {
+    @apply px-4 py-3 text-tiny font-semibold uppercase tracking-wider text-text-secondary;
+  }
+
+  .data-table tbody tr {
+    @apply border-t border-border-subtle transition-colors duration-150;
+  }
+
+  .data-table tbody tr:hover {
+    @apply bg-background-hover;
+  }
+
+  .data-table td {
+    @apply px-4 py-3 text-sm text-text-primary;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

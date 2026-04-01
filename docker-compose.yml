@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  tailscale:
+    image: tailscale/tailscale:latest
+    container_name: tailscale-node
+    restart: unless-stopped
+    environment:
+      - TS_AUTHKEY=tskey-auth-kRsdJAnQEQ11CNTRL-coU3nr9iAN2bgvfzb7MnN2HTYxn36aFE
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_HOSTNAME=dashboard-host
+    volumes:
+      - tailscale-state:/var/lib/tailscale
+      - tailscale-socket:/var/run/tailscale
+      - tailscale-tmp:/tmp
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - net_admin
+      - net_raw
+    network_mode: host
+
+  tailscale-dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tailscale-dashboard
+    restart: unless-stopped
+    ports:
+      - "1212:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DATABASE_PATH=/app/data/tailscale-dashboard.db
+      - NODE_SYNC_INTERVAL_SEC=300
+      - PING_POLLING_INTERVAL_SEC=30
+      - PING_TIMEOUT_MS=5000
+      - DATA_RETENTION_DAYS=30
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TAILSCALE_API_KEY=tskey-api-kvMbVZ3mnK11CNTRL-rJC8ozJeVC7fSF9CNm96D7LjXhzM9GTE
+      - TAILSCALE_TAILNET=seagull-company.ts.net
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+      - tailscale-state:/var/lib/tailscale
+      - tailscale-socket:/var/run/tailscale
+      - tailscale-tmp:/tmp
+    depends_on:
+      - tailscale
+
+volumes:
+  tailscale-state:
+  tailscale-socket:
+  tailscale-tmp:
+
+networks:
+  tailscale-net:
+    driver: bridge
